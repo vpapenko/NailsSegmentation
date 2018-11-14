@@ -1,0 +1,26 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2050
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nails", "Nails\Nails.csproj", "{A498E8F8-ABCD-412C-AC7B-E1959A3B33DA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A498E8F8-ABCD-412C-AC7B-E1959A3B33DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A498E8F8-ABCD-412C-AC7B-E1959A3B33DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A498E8F8-ABCD-412C-AC7B-E1959A3B33DA}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{A498E8F8-ABCD-412C-AC7B-E1959A3B33DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A498E8F8-ABCD-412C-AC7B-E1959A3B33DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A498E8F8-ABCD-412C-AC7B-E1959A3B33DA}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {54DED969-48A6-4CDA-BCA2-C30D1A9B7804}
+	EndGlobalSection
+EndGlobal

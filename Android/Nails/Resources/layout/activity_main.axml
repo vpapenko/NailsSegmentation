@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    
+	<ImageView
+        android:id="@+id/photo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+		android:layout_gravity="center" />
+	<FrameLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_alignParentBottom="true">
+		<ProgressBar
+			android:id="@+id/progressbar"
+			style="?android:attr/progressBarStyleHorizontal"
+			android:indeterminate="true"
+			android:max="100"
+			android:visibility="invisible"
+			android:backgroundTint="@android:color/white"
+			android:indeterminateTint="#1a09d6"
+			android:layout_marginTop="-7dp"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" />
+		<Button
+			android:id="@+id/send_photo_button"
+			android:text="@string/send_photo"
+			android:background="@drawable/button_bg_transparent"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="@dimen/abc_progress_bar_height_material"/>
+		<Button
+			android:id="@+id/process_new_photo_button"
+			android:text="@string/take_photo"
+			android:background="@drawable/button_bg_transparent"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="bottom" />
+	</FrameLayout>
+</FrameLayout>

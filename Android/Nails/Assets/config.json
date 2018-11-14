@@ -1,0 +1,15 @@
+{
+  "VersionId": "{912840ED-291D-4BFF-B201-7D4614BA281D}",
+  "ModelId": "{0457DB1E-A192-4DEC-B730-20EB03DFB1DF}",
+  "ModelName": "model.pb",
+  "NewVersionName": "Sopra.Nails.apk",
+  "StorageType": "WindowsAzureStorage",
+  "StorageConfig": {
+    "StorageConnectionString": "DefaultEndpointsProtocol=https;AccountName=nailsapp;AccountKey=UrKrTUmt67bH4IX+CTEHjiRLpqV48tfLGEAJZA5Ptf+bQNfUcHBS94oCTKKVbOnxb1tITzH/ApPg0zewRlEpdw==;EndpointSuffix=core.windows.net",
+    "DataContainerReference": "appdata",
+    "ImagesContainerReference": "images",
+    "ModelName": "model.pb",
+    "ConfigName": "config.json",
+    "NewVersionName": "Sopra.Nails.apk"
+  }
+}
