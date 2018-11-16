@@ -24,22 +24,36 @@ namespace Nails
         public Bitmap OriginalImage { get; private set; }
         public Bitmap ResultImage { get; private set; }
         public bool ImageIsSent { get; private set; } = true;
+        public TimeSpan PreprocessTime { get; private set; }
+        public TimeSpan SegmentationTime { get; private set; }
+        public TimeSpan PostprocessTime { get; private set; }
 
         public async Task<Bitmap> ProcessNewImage()
-        {
+        { 
             Bitmap image = await GetImage();
             OriginalImage = image;
 
-            float[] input = imageProcess.GetBitmapPixels(image);
             if (pipeline == null)
             {
-                pipeline = new TensorflowContribAndroidPipeline(versionsConroller.Config.GetModelPath());
+                pipeline = new TensorflowContribAndroidPipeline(versionsConroller.Config.GetModelPath(), versionsConroller.Config.ModelInputSize
+                    , versionsConroller.Config.ModelInputName, versionsConroller.Config.ModelOutputName);
             }
+
+            DateTime time = DateTime.Now;
+            float[] input = imageProcess.GetBitmapPixels(image);
+
+            PreprocessTime = DateTime.Now - time;
+            time = DateTime.Now;
             var output = pipeline.RecognizeImage(input);
+
+            SegmentationTime = DateTime.Now - time;
+            time = DateTime.Now;
 
             Bitmap result = imageProcess.BitmapPostrocess(image, output);
             ResultImage = result;
             ImageIsSent = false;
+
+            PostprocessTime = DateTime.Now - time;
             return result;
         }
 
@@ -61,7 +75,8 @@ namespace Nails
         public async Task DownloadNewModel()
         {
             await versionsConroller.DownloadNewModel();
-            pipeline = new TensorflowContribAndroidPipeline(versionsConroller.Config.GetModelPath());
+            pipeline = new TensorflowContribAndroidPipeline(versionsConroller.Config.GetModelPath(), versionsConroller.Config.ModelInputSize
+                    , versionsConroller.Config.ModelInputName, versionsConroller.Config.ModelOutputName);
         }
         public async Task<bool> IsNewVersionAvailable()
         {

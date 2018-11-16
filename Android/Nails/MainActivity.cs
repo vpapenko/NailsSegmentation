@@ -57,6 +57,11 @@ namespace Nails
                 mainConroller.ImageWidth = PhotoView.Width;
                 var result = await Task.Run(() => mainConroller.ProcessNewImage());
                 PhotoView.SetImageBitmap(result);
+                Toast.MakeText(this
+                    , "PreprocessTime: " + mainConroller.PreprocessTime.TotalSeconds
+                    + System.Environment.NewLine + "SegmentationTime: " + mainConroller.SegmentationTime.TotalSeconds
+                    + System.Environment.NewLine + "PostprocessTime: " + mainConroller.PostprocessTime.TotalSeconds
+                    , ToastLength.Long).Show();
             }
             catch (Exception ex)
             {

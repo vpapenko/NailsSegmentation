@@ -8,15 +8,18 @@ namespace Nails
     {
         readonly TensorFlowInferenceInterface inferenceInterface;
 
-        public TensorflowContribAndroidPipeline(string modelName)
+        public TensorflowContribAndroidPipeline(string modelName, int modelInputSize, string inputName, string outputName)
         {
             var assets = Application.Context.Assets;
             inferenceInterface = new TensorFlowInferenceInterface(assets, modelName);
+            ModelInputSize = modelInputSize;
+            InputName = inputName;
+            OutputName = outputName;
         }
 
-        static readonly int ModelInputSize = 256;
-        static readonly string InputName = "input";
-        static readonly string OutputName = "output/Sigmoid";
+        readonly int ModelInputSize = 256;
+        readonly string InputName = "input";
+        readonly string OutputName = "output/Sigmoid";
 
         public float[] RecognizeImage(float[] input)
         {

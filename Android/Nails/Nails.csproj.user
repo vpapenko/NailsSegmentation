@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AndroidDesignerPreferredTheme>AppTheme</AndroidDesignerPreferredTheme>
     <AndroidDesignerPreferredDevice>Nexus 4</AndroidDesignerPreferredDevice>
-    <SelectedDevice>Android_Accelerated_x86_Oreo</SelectedDevice>
+    <SelectedDevice>Samsung SM-G900F</SelectedDevice>
     <DefaultDevice>Android_Accelerated_x86_Oreo</DefaultDevice>
   </PropertyGroup>
 </Project>

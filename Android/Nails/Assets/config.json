@@ -1,7 +1,10 @@
 {
-  "VersionId": "{912840ED-291D-4BFF-B201-7D4614BA281D}",
-  "ModelId": "{0457DB1E-A192-4DEC-B730-20EB03DFB1DF}",
+  "VersionId": "{1556FEA8-AD2C-4F71-BDF6-00F30EDAB134}",
+  "ModelId": "{FFD2664E-952B-4221-AB00-30824DA59DD6}",
   "ModelName": "model.pb",
+  "ModelInputSize": "256",
+  "ModelInputName": "input",
+  "ModelOutputName": "output/Sigmoid",
   "NewVersionName": "Sopra.Nails.apk",
   "StorageType": "WindowsAzureStorage",
   "StorageConfig": {
