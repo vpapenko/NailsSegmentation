@@ -41,7 +41,6 @@ namespace Nails
         private async Task CheckVersions()
         {
             //await CheckNewVersion();
-            await CheckModel();
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults) => PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -125,8 +124,7 @@ namespace Nails
                 ProgressBar.Visibility = ViewStates.Invisible;
             }
         }
-
-
+        
         private async void DownloadNewVersion()
         {
             try
@@ -156,62 +154,6 @@ namespace Nails
             alert.SetButton("Cancel", (c, ev) => { });
             alert.SetButton2("Download", (c, ev) => { DownloadNewVersion(); });
             alert.Show();
-        }
-
-        private async Task CheckModel()
-        {
-            try
-            {
-                ProcessNewPhotoButton.Enabled = false;
-                SendPhotoButton.Enabled = false;
-                ProgressBar.Visibility = ViewStates.Visible;
-
-                if (await mainConroller.IsNewModelAvailable())
-                {
-                    AskForDownloadModel();
-                }
-            }
-            catch (Exception ex)
-            {
-                Toast.MakeText(this, ex.Message, ToastLength.Long).Show();
-            }
-            finally
-            {
-                ProcessNewPhotoButton.Enabled = true;
-                SendPhotoButton.Enabled = !mainConroller.ImageIsSent;
-                ProgressBar.Visibility = ViewStates.Invisible;
-            }
-        }
-        
-        private async void DownloadModel()
-        {
-            try
-            {
-                ProcessNewPhotoButton.Enabled = false;
-                SendPhotoButton.Enabled = false;
-                ProgressBar.Visibility = ViewStates.Visible;
-                await mainConroller.DownloadNewModel();
-            }
-            catch (Exception ex)
-            {
-                Toast.MakeText(this, ex.Message, ToastLength.Long).Show();
-            }
-            finally
-            {
-                ProcessNewPhotoButton.Enabled = true;
-                SendPhotoButton.Enabled = !mainConroller.ImageIsSent;
-                ProgressBar.Visibility = ViewStates.Invisible;
-            }
-        }
-
-        private void AskForDownloadModel()
-        {
-            var dialog = new Android.App.AlertDialog.Builder(this);
-            Android.App.AlertDialog alert = dialog.Create();
-            alert.SetMessage("New model available.");
-            alert.SetButton("Cancel", (c, ev) => { });
-            alert.SetButton2("Download", (c, ev) => { DownloadModel(); });
-            alert.Show();
-        }
+        }        
     }
 }

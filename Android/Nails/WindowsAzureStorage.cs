@@ -47,12 +47,6 @@ namespace Nails
             return result;
         }
 
-        public async Task DownloadModel(string path)
-        {
-            var blob = dataCloudBlobContainer.GetBlockBlobReference(Config.ModelName);
-            await blob.DownloadToFileAsync(path, FileMode.Create);
-        }
-
         public async Task DownloadNewVersion(string path)
         {
             var blob = dataCloudBlobContainer.GetBlockBlobReference(Config.NewVersionName);

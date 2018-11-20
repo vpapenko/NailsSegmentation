@@ -13,12 +13,16 @@ namespace Nails
     {
         public MainConroller()
         {
-            versionsConroller = new VersionsConroller();
+            config = ConfigReader.LoadConfigFromAssets();
+            versionsConroller = new VersionsConroller(config);
+            pipeline = new TensorflowContribAndroidPipeline(Config.ModelName, config.ModelInputSize
+                     , config.ModelInputName, config.ModelOutputName);
         }
 
         IPipeline pipeline;
         readonly ImageProcess imageProcess = new ImageProcess();
         readonly VersionsConroller versionsConroller;
+        readonly Config config;
 
         public int ImageWidth { get; set; } = 320;
         public Bitmap OriginalImage { get; private set; }
@@ -33,33 +37,26 @@ namespace Nails
             Bitmap image = await GetImage();
             OriginalImage = image;
 
-            if (pipeline == null)
-            {
-                pipeline = new TensorflowContribAndroidPipeline(versionsConroller.Config.GetModelPath(), versionsConroller.Config.ModelInputSize
-                    , versionsConroller.Config.ModelInputName, versionsConroller.Config.ModelOutputName);
-            }
-
             DateTime time = DateTime.Now;
             float[] input = imageProcess.GetBitmapPixels(image);
-
             PreprocessTime = DateTime.Now - time;
+
             time = DateTime.Now;
             var output = pipeline.RecognizeImage(input);
-
             SegmentationTime = DateTime.Now - time;
-            time = DateTime.Now;
 
+            time = DateTime.Now;
             Bitmap result = imageProcess.BitmapPostrocess(image, output);
             ResultImage = result;
             ImageIsSent = false;
-
             PostprocessTime = DateTime.Now - time;
+
             return result;
         }
 
         public async Task SendImage()
         {
-            IStorage storage = new WindowsAzureStorage(versionsConroller.Config.StorageConfig);
+            IStorage storage = new WindowsAzureStorage(config.StorageConfig);
             if (OriginalImage != null && ResultImage != null)
             {
                 await storage.SaveImage(OriginalImage, ResultImage);
@@ -67,17 +64,6 @@ namespace Nails
             }
         }
 
-        public async Task<bool> IsNewModelAvailable()
-        {
-            return await versionsConroller.IsNewModelAvailable();
-        }
-
-        public async Task DownloadNewModel()
-        {
-            await versionsConroller.DownloadNewModel();
-            pipeline = new TensorflowContribAndroidPipeline(versionsConroller.Config.GetModelPath(), versionsConroller.Config.ModelInputSize
-                    , versionsConroller.Config.ModelInputName, versionsConroller.Config.ModelOutputName);
-        }
         public async Task<bool> IsNewVersionAvailable()
         {
             return await versionsConroller.IsNewVersionAvailable();
@@ -86,9 +72,10 @@ namespace Nails
         public async Task DownloadNewVersion()
         {
             await versionsConroller.DownloadNewVersion();
-            if (File.Exists(versionsConroller.Config.GetModelPath()))
+            if (File.Exists(config.GetNewVersionPath()))
             {
-                Intent promptInstall = new Intent(Intent.ActionView).SetDataAndType(Android.Net.Uri.Parse(versionsConroller.Config.GetNewVersionPath()), "application/vnd.android.package-archive");
+                Intent promptInstall = new Intent(Intent.ActionView).SetDataAndType(Android.Net.Uri.Parse(config.GetNewVersionPath())
+                    , "application/vnd.android.package-archive");
                 Application.Context.StartActivity(promptInstall);
             }
         }
@@ -119,10 +106,10 @@ namespace Nails
 
         private async Task<Bitmap> GetTestImage()
         {
-            return getBitmapFromAsset("p1.jpg");
+            return GetBitmapFromAsset("p1.jpg");
         }
 
-        private static Bitmap getBitmapFromAsset(string filePath)
+        private static Bitmap GetBitmapFromAsset(string filePath)
         {
             var assetManager = Application.Context.Assets;
 
