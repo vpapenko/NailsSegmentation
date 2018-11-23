@@ -29,12 +29,10 @@ namespace Nails
             original.GetPixels(resultArray, 0, xTarget, 0, 0, xTarget, yTarget);
 
             //Mask normalization
-            // (v / maskMax) : normalize value to 0<value<1
-            // 255 * (...) : scale to 255
+            // (v <= 0.5 ? 0 : 255) normalize mask to 255 for nail pixel and 0 for non nail pixel
             // ... - 16777216 : add 255 to alfa chanel
-            // Result: mask data stored in red chanel + 255 alfa
-            float maskMax = mask.Max();
-            var maskInt = Array.ConvertAll(mask, v => (int)(255 * (v / maskMax) - 16777216));
+            // Result: mask data stored in blue chanel + 255 alfa
+            var maskInt = Array.ConvertAll(mask, v => (int)((v <= 0.5 ? 0 : 255) - 16777216));
 
             //Scale mask to result image size
             var maskBitmap = Bitmap.CreateBitmap(ModelInputSize, ModelInputSize, Bitmap.Config.Argb8888);
@@ -46,14 +44,23 @@ namespace Nails
 
             //Combine original image and mask
             int maskVal;
+            float r_original, g_original, b_original;
+            float shift_val = (float)0.25;
+            float shift;
             for (int i = 0; i < resultArray.Length; i++)
             {
-                //Cut everything exept red chanel
+                //Cut everything exept blue chanel. Result is 
                 maskVal = (maskScalledArray[i] & 0xFF);
 
-                resultArray[i] = ((resultArray[i]) & 0xFF) * (1 - maskVal / 128)
-                    + ((((resultArray[i] >> 8) & 0xFF) * (1 - maskVal / 128)) << 8)
-                    + (((resultArray[i] >> 16) & 0xFF) << 16)
+                b_original = (resultArray[i]) & 0xFF;
+                g_original = (resultArray[i] >> 8) & 0xFF;
+                r_original = (resultArray[i] >> 16) & 0xFF;
+
+                shift = maskVal <= 128 ? 1 : shift_val;
+
+                resultArray[i] = (int)(b_original * shift)
+                    + ((int)(g_original * shift) << 8)
+                    + ((int)(r_original) << 16)
                     - 16777216;
             }
 
