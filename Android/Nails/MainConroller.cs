@@ -17,6 +17,8 @@ namespace Nails
             versionsConroller = new VersionsConroller(config);
             pipeline = new TensorflowContribAndroidPipeline(Config.ModelName, config.ModelInputSize
                      , config.ModelInputName, config.ModelOutputName);
+
+            //IPipeline pipeline1 = new TensorFlowLitePipeline();
         }
 
         IPipeline pipeline;
@@ -72,12 +74,10 @@ namespace Nails
         public async Task DownloadNewVersion()
         {
             await versionsConroller.DownloadNewVersion();
-            if (File.Exists(config.GetNewVersionPath()))
-            {
-                Intent promptInstall = new Intent(Intent.ActionView).SetDataAndType(Android.Net.Uri.Parse(config.GetNewVersionPath())
-                    , "application/vnd.android.package-archive");
-                Application.Context.StartActivity(promptInstall);
-            }
+            Intent promptInstall = new Intent(Intent.ActionView).SetDataAndType(Android.Net.Uri.Parse(config.GetNewVersionPath())
+            , "application/vnd.android.package-archive");
+            promptInstall.AddFlags(ActivityFlags.NewTask);
+            Application.Context.StartActivity(promptInstall);
         }
 
         private async Task<Bitmap> GetImage()
